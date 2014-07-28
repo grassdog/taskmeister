@@ -1,35 +1,33 @@
 module Taskmeister
   class TaskList
-    attr_reader :tasks
-
     def initialize(tasks)
-      @tasks = tasks
-      @hash = TaskHash.new(tasks)
+      @hash = {}
+
+      tasks.each do |t|
+        t.id.length.times do |i|
+          prefix = t.id.slice(0, i + 1)
+          unless @hash.has_key?(prefix)
+            @hash[prefix] = t
+            break
+          end
+        end
+      end
     end
 
     def short_list
-      @hash.short_list
+      longest_id = @hash.keys.max {|id| id.length }
+      @hash.map { |id, task|
+        marker = task.notes? ? " »" : ""
+        "%-#{longest_id.length}s - %s%s" % [id, task.text, marker]
+      }
     end
 
-    def serialize
-      ""
+    def [](key)
+      @hash[key]
     end
 
-    def self.from_lines(lines)
-      grouped_lines = \
-        lines.map(&:chomp)
-             .reject(&:empty?)
-             .reduce([]) do |acc, l|
-               acc << [l]    if l.match(/\A[^\s>]/) # A new task
-               acc.last << l if l.match(/\A>/)      # A line of note for the latest task
-               acc
-             end
-
-      tasks = grouped_lines.map do |l|
-        Task.from_lines(l)
-      end
-
-      self.new tasks
+    def complete(short_id)
+      # @hash.remove(short_id)
     end
   end
 end
