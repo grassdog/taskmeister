@@ -52,9 +52,9 @@ module Taskmeister
           options.task_id = edit_id
         end
 
-        opts.on("-r", "--rename TASK_ID",
-                "Rename a task") do |replace_id|
-          options.command = "rename"
+        opts.on("-r", "--replace TASK_ID",
+                "Replace a task description") do |replace_id|
+          options.command = "replace"
           options.task_id = replace_id
         end
 

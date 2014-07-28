@@ -16,7 +16,8 @@ end
 
 options = Taskmeister::CommandOptions.parse(ARGV)
 
-task_list_name = options.list || Taskmeister::ProjectDirectory.list_name_for(Pathname.getwd)
+task_list_name = options.list ||
+                 Taskmeister::ProjectDirectory.list_name_for(Pathname.getwd)
 
 unless task_list_name
   puts "Could not find a project directory. Please specify a task list."
@@ -40,8 +41,8 @@ when "list"
   puts "You want me to list"
 when "done"
   puts "You want me to done"
-when "rename"
-  puts "You want me to rename"
+when "replace"
+  puts "You want me to replace"
 when "edit"
   puts "You want me to edit"
 when "show"
