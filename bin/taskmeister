@@ -1,7 +1,49 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << File.expand_path('../../lib', __FILE__)
+$LOAD_PATH << File.expand_path("../../lib", __FILE__)
 
-require 'taskmeister'
+require "taskmeister"
 
-puts "Coming soon..."
+def read_lines(path)
+  if File.exist?(path) then File.readlines(path) else []
+end
+
+def write_file(path, content)
+  File.open(path, "w") do |f|
+    f.write content
+  end
+end
+
+options = Taskmeister::CommandOptions.parse(ARGV)
+
+task_list_name = options.list || Taskmeister::ProjectDirectory.list_name_for(Pathname.getwd)
+
+unless task_list_name
+  puts "Could not find a project directory. Please specify a task list."
+  exit(1)
+end
+
+task_list_path = Pathname.new(options.task_dir) + task_list_name
+
+puts task_list_path
+
+# TODO Read in the task list file if it exists
+
+# Is there a file try read?
+
+# TODO By default the project dir will add a md to the file name
+
+task_list = Taskmeister::TaskList.new(read_lines(task_list_path))
+
+case options.command
+when "list"
+  puts "You want me to list"
+when "done"
+  puts "You want me to done"
+when "rename"
+  puts "You want me to rename"
+when "edit"
+  puts "You want me to edit"
+when "show"
+  puts "You want me to show"
+end

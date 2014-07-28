@@ -62,17 +62,11 @@ RSpec.configure do |config|
     expectations.syntax = :expect
   end
 
-  # rspec-mocks config goes here. You can use an alternate test double
-  # library (such as bogus or mocha) by changing the `mock_with` option here.
+=end
+
   config.mock_with :rspec do |mocks|
-    # Enable only the newer, non-monkey-patching expect syntax.
-    # For more details, see:
-    #   - http://teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
     mocks.syntax = :expect
 
-    # Prevents you from mocking or stubbing a method that does not exist on
-    # a real object. This is generally recommended.
     mocks.verify_partial_doubles = true
   end
-=end
 end
