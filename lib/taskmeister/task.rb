@@ -1,13 +1,19 @@
+require 'securerandom'
+
 module Taskmeister
   class Task
     attr_reader :text, :notes, :id
 
-    def initialize(id, text, notes)
-      @id, @text, @notes = id, text, notes
+    def initialize(text, id, notes)
+      @text, @id, @notes = text, id, notes
     end
 
-    def self.create(name, notes)
-      self.class.new(name, notes, SecureRandom.uuid)
+    def notes?
+      notes && !notes.empty?
+    end
+
+    def self.create(text, notes)
+      self.class.new(text, SecureRandom.uuid, notes)
     end
 
     def self.from_lines(lines)
@@ -17,7 +23,7 @@ module Taskmeister
 
       notes = notes.map { |l| l.gsub(/\A> /, "") }.join("\n")
 
-      self.new(id, text, notes)
+      self.new(text, id, notes)
     end
 
     def self.task_details(line)

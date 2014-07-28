@@ -1,9 +1,8 @@
-require "taskmeister/task_list"
 require "taskmeister/task"
 
 module Taskmeister
   RSpec.describe Task do
-    describe "#from_lines" do
+    describe ".from_lines" do
       subject { described_class.from_lines(lines) }
 
       describe "passed a single valid line" do
