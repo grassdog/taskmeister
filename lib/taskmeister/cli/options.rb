@@ -44,27 +44,28 @@ module Taskmeister
           end
 
           opts.on("-d", "--done TASK_ID",
-                  "Finish a task") do |done_id|
+                  "Finish a task") do |task_id|
             options.command = Commands::DONE
-            options.task_id = done_id
+            options.task_id = task_id
           end
 
           opts.on("-s", "--show TASK_ID",
-                  "Show a task list item and its notes") do |show_id|
+                  "Show a task list item and its notes") do |task_id|
             options.command = Commands::SHOW
-            options.task_id = show_id
+            options.task_id = task_id
           end
 
-          opts.on("-e", "--edit TASK_ID",
-                  "Edit a task in Vim") do |edit_id|
+          opts.on("-e", "--edit [TASK_ID]",
+                  "Edit task list in Vim",
+                  "  Will search for a specific task if TASK_ID is provided") do |task_id|
             options.command = Commands::EDIT
-            options.task_id = edit_id
+            options.task_id = task_id
           end
 
           opts.on("-r", "--replace TASK_ID",
-                  "Replace a task description") do |replace_id|
+                  "Replace a task description") do |task_id|
             options.command = Commands::REPLACE
-            options.task_id = replace_id
+            options.task_id = task_id
           end
 
           opts.separator ""

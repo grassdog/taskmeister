@@ -43,7 +43,8 @@ module Taskmeister
 
           task = task_list[options.task_id]
 
-          system "vim +/#{task.id} #{task_list_path}" if task
+          search_path = task ? "+/#{task.id} " : ""
+          system "vim #{search_path}#{task_list_path}"
 
         when Commands::ADD
 

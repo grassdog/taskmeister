@@ -9,7 +9,8 @@ name from the current project directory. It finds a project directory by walking
 up from the current directory until it finds a `.git` or `.hg` directory in it.
 
 Second: I like to have a short list of notes accompanying my tasks. You can add
-notes beneath your task. They can be edited via Vim with `taskmeister -e id`.
+notes beneath your task. They can be edited via Vim with `taskmeister -e` or
+`taskmeister -e id` to seek to a specific task.
 
 Third: I format my task files in Markdown so that when I open them on my phone
 via a Markdown-enabled editor they look nice. The format is still simple:

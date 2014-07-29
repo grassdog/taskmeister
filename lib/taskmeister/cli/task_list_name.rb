@@ -6,7 +6,7 @@ module Taskmeister
       def self.from_project_dir(dir)
         project_dir = find_project_dir(dir)
 
-        return project_dir.basename.sub_ext(".md") if project_dir
+        return project_dir.basename.to_s + ".md" if project_dir
       end
 
       def self.find_project_dir(dir)
