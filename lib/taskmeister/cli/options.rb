@@ -15,8 +15,8 @@ module Taskmeister
 
     class Options
       def initialize(stdout = STDOUT, kernel = Kernel)
-        @stdout   = stdout
-        @kernel   = kernel
+        @stdout = stdout
+        @kernel = kernel
       end
 
       def parse(args)
@@ -86,7 +86,7 @@ module Taskmeister
         options.task_text = task_text.join(" ") unless task_text.empty?
 
         # If there is task text and the default command hasn't been overwritten
-        # make the command an add
+        # by the user, make the command add
         if !task_text.empty? and options.command == Commands::LIST
           options.command = Commands::ADD
         end

@@ -12,15 +12,15 @@ module Taskmeister
 
         task_list_path = Pathname.new(options.task_dir) + task_list_name(options)
 
-        task_list = Taskmeister::TaskListReader.from_file(task_list_path)
+        task_list = Taskmeister::TaskListReader.from_markdown_file(task_list_path)
 
-        @kernel.exit run_command(options, task_list_path, task_list)
+        run_command(options, task_list_path, task_list)
       end
 
       private
 
       def task_list_name(options)
-        task_list_name = options.list || Taskmeister::ProjectDirectory.list_name_for(Pathname.getwd)
+        task_list_name = options.list || TaskListName.from_project_dir(Pathname.getwd)
 
         unless task_list_name
           @stdout.puts "Could not find a project directory. Please specify a task list."
@@ -38,6 +38,12 @@ module Taskmeister
         when Commands::SHOW
 
           @stdout.puts task_list.details(options.task_id)
+
+        when Commands::EDIT
+
+          task = task_list[options.task_id]
+
+          system "vim +/#{task.id} #{task_list_path}" if task
 
         when Commands::ADD
 
@@ -57,20 +63,13 @@ module Taskmeister
             task_list.replace options.task_id, options.task_text
           }
 
-        when Commands::EDIT
-
-          task = task_list[options.task_id]
-          if task
-            system "vim +/#{task.id} #{task_list_path}"
-          end
-
         end
 
-        0
+        @kernel.exit 0
       end
 
       def update_task_list(task_list, file_path)
-        Taskmeister::TaskListWriter.to_file(task_list, file_path) if yield
+        Taskmeister::TaskListWriter.to_markdown_file(task_list, file_path) if yield
       end
     end
   end

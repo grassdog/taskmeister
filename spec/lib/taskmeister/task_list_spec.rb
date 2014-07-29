@@ -49,25 +49,29 @@ module Taskmeister
     describe "#complete" do
       it "removes the identified task" do
         expect(list["7"]).to eq task1
-        list.complete("7")
+        result = list.complete("7")
+        expect(result).to be_truthy
         expect(list["7"]).to be_nil
       end
 
       it "ignores non-existent tasks" do
-        list.complete("345")
+        result = list.complete("345")
+        expect(result).to be_falsy
         expect(list.tasks.size).to eq tasks.size
       end
     end
 
     describe "#replace" do
       it "replaces the text of the specified task" do
-        list.replace("7", "A new task text")
+        result = list.replace("7", "A new task text")
+        expect(result).to be_truthy
         task = list["7"]
         expect(task.text).to eq "A new task text"
       end
 
       it "ignores a non-existent task" do
-        list.replace("345", "A new task text")
+        result = list.replace("345", "A new task text")
+        expect(result).to be_falsy
         expect(list.tasks.size).to eq tasks.size
       end
     end
@@ -92,7 +96,8 @@ module Taskmeister
     describe "#add" do
       it "adds the task and assigns it a short id" do
         task8 = Task.new("task 8", "f23891df0-97a5-4310-9b01-374983416af7", nil)
-        list.add(task8)
+        result = list.add(task8)
+        expect(result).to be_truthy
         expect(list.tasks.size).to eq 8
         expect(list["f23"]).to eq task8
       end

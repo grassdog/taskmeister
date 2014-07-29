@@ -25,7 +25,7 @@ module Taskmeister
     end
 
     def add(task)
-      prefix = short_code_for_task(task)
+      prefix = assign_short_code_to_task(task)
       @hash[prefix] = task
     end
 
@@ -48,7 +48,7 @@ module Taskmeister
 
     private
 
-    def short_code_for_task(task)
+    def assign_short_code_to_task(task)
       task.id.length.times do |i|
         prefix = task.id.slice(0, i + 1)
         return prefix unless @hash.has_key?(prefix)

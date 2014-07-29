@@ -1,6 +1,6 @@
 module Taskmeister
   class TaskListReader
-    def self.from_lines(file_lines)
+    def self.from_markdown(file_lines)
       grouped_lines = \
         file_lines.map(&:chomp)
                   .reject(&:empty?)
@@ -11,15 +11,15 @@ module Taskmeister
                   end
 
       tasks = grouped_lines.map do |l|
-        Task.from_lines(l)
+        Task.from_markdown(l)
       end
 
       TaskList.new tasks
     end
 
-    def self.from_file(path)
+    def self.from_markdown_file(path)
       lines = File.exist?(path) ? File.readlines(path) : []
-      from_lines lines
+      from_markdown lines
     end
   end
 end

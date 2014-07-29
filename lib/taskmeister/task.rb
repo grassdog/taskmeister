@@ -27,17 +27,17 @@ module Taskmeister
       self.new(text, SecureRandom.uuid, "")
     end
 
-    def self.from_lines(lines)
+    def self.from_markdown(lines)
       task, *notes = *lines
 
-      text, id = task_details(task)
+      text, id = task_attributes(task)
 
       notes = notes.map { |l| l.gsub(/\A> ?/, "") }.join("\n")
 
       self.new(text, id, notes)
     end
 
-    def self.task_details(line)
+    def self.task_attributes(line)
       matches = line.match(/\A(.+) - \[id\]\(([\w-]+)\)\z/)
 
       fail "Invalid task: #{line}" unless matches

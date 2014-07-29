@@ -12,7 +12,18 @@ Second: I like to have a short list of notes accompanying my tasks. You can add
 notes beneath your task. They can be edited via Vim with `taskmeister -e id`.
 
 Third: I format my task files in Markdown so that when I open them on my phone
-via a Markdown-enabled editor they look nice.
+via a Markdown-enabled editor they look nice. The format is still simple:
+
+```markdown
+Add authorisation - [id](aaf83a9b-02f7-4cc0-8ee1-4d98b98903b8)
+
+> Some notes to go with the task above.
+>
+> Maybe paste in some links or other interesting information for later.
+
+Refactor the task model - [id](ae0cce15-456d-48c0-a2e2-69d5f567e092)
+Update the README - [id](a5d4d3a9-2b9a-427a-9047-b47c6aec8f93)
+```
 
 ## Installation
 
@@ -60,8 +71,8 @@ alias t='taskmeister -t ~/Dropbox/Tasks -l mytasks.md'
 
 ## Contributing
 
-1. Fork it ( https://github.com/grassdog/taskmeister/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Fork the project on Github, add tests for your changes, and submit a well described pull request.
+
+## Copyright
+
+Copyright (c) 2014 Ray Grasso. See LICENSE.txt for further details.

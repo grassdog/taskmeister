@@ -2,8 +2,8 @@ require "taskmeister/task"
 
 module Taskmeister
   RSpec.describe Task do
-    describe ".from_lines" do
-      subject { described_class.from_lines(lines) }
+    describe ".from_markdown" do
+      subject { described_class.from_markdown(lines) }
 
       describe "passed a single valid line" do
         let(:lines) { [
@@ -50,7 +50,7 @@ module Taskmeister
       it "returns a task with the specified text and a new id" do
         task = described_class.create("My task text")
         expect(task.text).to eq "My task text"
-        expect(task.id).to match /[\w-]+/
+        expect(task.id).to match(/[\w-]+/)
         expect(task.notes).to eq ""
       end
     end

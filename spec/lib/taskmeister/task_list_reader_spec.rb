@@ -4,20 +4,20 @@ require "taskmeister/task"
 
 module Taskmeister
   RSpec.describe TaskListReader do
-    describe ".from_lines" do
+    describe ".from_markdown" do
 
       before do
-        allow(Task).to receive(:from_lines).and_return(double(Task))
+        allow(Task).to receive(:from_markdown).and_return(double(Task))
         allow(TaskList).to receive(:new).and_return(double(TaskList))
       end
 
-      let(:it) { described_class.from_lines(lines) }
+      let(:it) { described_class.from_markdown(lines) }
 
       describe "passed an empty list of lines" do
         let(:lines) { [] }
 
         it "creates an empty task list" do
-          expect(Task).not_to receive(:from_lines)
+          expect(Task).not_to receive(:from_markdown)
           expect(TaskList).to receive(:new).with([])
           it
         end
@@ -31,8 +31,8 @@ module Taskmeister
         }
 
         it "creates a task for each line, stripping new lines" do
-          expect(Task).to receive(:from_lines).with([ "Task number 1" ])
-          expect(Task).to receive(:from_lines).with([ "Task number 2" ])
+          expect(Task).to receive(:from_markdown).with([ "Task number 1" ])
+          expect(Task).to receive(:from_markdown).with([ "Task number 2" ])
           it
         end
       end
@@ -55,15 +55,15 @@ module Taskmeister
         }
 
         it "creates a task for each line with their associated notes, stripping newlines" do
-          expect(Task).to receive(:from_lines).with([
+          expect(Task).to receive(:from_markdown).with([
             "Task number 1",
             "> note line 1",
             "> note line 2",
           ])
-          expect(Task).to receive(:from_lines).with([
+          expect(Task).to receive(:from_markdown).with([
             "Task number 2"
           ])
-          expect(Task).to receive(:from_lines).with([
+          expect(Task).to receive(:from_markdown).with([
             "Task number 3",
             "> note line 3",
             "> note line 4",
