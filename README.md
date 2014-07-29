@@ -49,7 +49,8 @@ Specific options:
                                        A project directory is found by walking up from the current directory and stopping if a .git or .hg directory is found.
     -d, --done TASK_ID               Finish a task
     -s, --show TASK_ID               Show a task list item and its notes
-    -e, --edit TASK_ID               Edit a task in Vim
+    -e, --edit [TASK_ID]             Edit task list in Vim
+                                       Will search for a specific task if TASK_ID is provided
     -r, --replace TASK_ID            Replace a task description
 
 Common options:
