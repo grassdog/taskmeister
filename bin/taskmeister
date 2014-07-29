@@ -6,58 +6,5 @@ $LOAD_PATH << File.expand_path("../../lib", __FILE__)
 Signal.trap("INT") { exit 1 }
 
 require "taskmeister"
-require "pathname"
 
-def update(task_list, file_path)
-  yield
-  Taskmeister::TaskListWriter.to_file(task_list, file_path)
-end
-
-options = Taskmeister::CommandOptions.parse(ARGV)
-
-task_list_name = options.list || Taskmeister::ProjectDirectory.list_name_for(Pathname.getwd)
-
-unless task_list_name
-  puts "Could not find a project directory. Please specify a task list."
-  exit 1
-end
-
-task_list_path = Pathname.new(options.task_dir) + task_list_name
-
-task_list = Taskmeister::TaskListReader.from_file(task_list_path)
-
-case options.command
-when Taskmeister::CommandOptions::LIST
-
-  puts task_list.to_short_list
-
-when Taskmeister::CommandOptions::SHOW
-
-  puts task_list.details(options.task_id)
-
-when Taskmeister::CommandOptions::ADD
-
-  update(task_list, task_list_path) {
-    task_list.add(Taskmeister::Task.create(options.task_text))
-  }
-
-when Taskmeister::CommandOptions::DONE
-
-  update(task_list, task_list_path) {
-    task_list.complete options.task_id
-  }
-
-when Taskmeister::CommandOptions::REPLACE
-
-  update(task_list, task_list_path) {
-    task_list.replace options.task_id
-  }
-
-when Taskmeister::CommandOptions::EDIT
-
-  task = task_list[options.task_id]
-  if task
-    system "vim +/#{task.id} #{task_list_path}"
-  end
-
-end
+Taskmeister::Cli::Main.new(ARGV.dup).execute!

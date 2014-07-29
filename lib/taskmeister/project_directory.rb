@@ -7,9 +7,9 @@ module Taskmeister
         child.directory? && is_project_dir?(child)
       }
 
-      return nil if dir == Pathname.new("/") || p.parent.nil?
+      return nil if dir == Pathname.new("/") || dir.parent.nil?
 
-      return self.for(p.parent)
+      return self.list_name_for(dir.parent)
     end
 
     def self.is_project_dir?(dir)

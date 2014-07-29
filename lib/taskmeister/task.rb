@@ -14,7 +14,7 @@ module Taskmeister
 
     def to_markdown
       [ "#{text} - [id](#{id})" ].tap do |a|
-        return a unless notes.match /\S/
+        return a unless notes.match(/\S/)
         a << ""
         a.concat notes.split("\n").map { |n|
           n.size > 0 ? "> #{n}" : ">"
