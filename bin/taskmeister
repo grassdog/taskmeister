@@ -2,12 +2,14 @@
 
 $LOAD_PATH << File.expand_path("../../lib", __FILE__)
 
+# Exit cleanly from an early interrupt
+Signal.trap("INT") { exit 1 }
+
 require "taskmeister"
 
-def write_file(path, content)
-  File.open(path, "w") do |f|
-    f.write content
-  end
+def update(task_list, file_path)
+  yield
+  Taskmeister::TaskListWriter.to_file(task_list, file_path)
 end
 
 options = Taskmeister::CommandOptions.parse(ARGV)
@@ -24,14 +26,37 @@ task_list_path = Pathname.new(options.task_dir) + task_list_name
 task_list = Taskmeister::TaskListReader.from_file(task_list_path)
 
 case options.command
-when "list"
-  puts task_list.short_list
-when "done"
-  puts "You want me to done"
-when "replace"
-  puts "You want me to replace"
-when "edit"
-  puts "You want me to edit"
-when "show"
-  puts "You want me to show"
+when Taskmeister::CommandOptions::LIST
+
+  puts task_list.to_short_list
+
+when Taskmeister::CommandOptions::SHOW
+
+  puts task_list.details(options.task_id)
+
+when Taskmeister::CommandOptions::ADD
+
+  update(task_list, task_list_path) {
+    task_list.add(Taskmeister::Task.create(options.task_text))
+  }
+
+when Taskmeister::CommandOptions::DONE
+
+  update(task_list, task_list_path) {
+    task_list.complete options.task_id
+  }
+
+when Taskmeister::CommandOptions::REPLACE
+
+  update(task_list, task_list_path) {
+    task_list.replace options.task_id
+  }
+
+when Taskmeister::CommandOptions::EDIT
+
+  task = task_list[options.task_id]
+  if task
+    system "vim +/#{task.id} #{task_list_path}"
+  end
+
 end

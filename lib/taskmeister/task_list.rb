@@ -4,17 +4,11 @@ module Taskmeister
       @hash = {}
 
       tasks.each do |t|
-        t.id.length.times do |i|
-          prefix = t.id.slice(0, i + 1)
-          unless @hash.has_key?(prefix)
-            @hash[prefix] = t
-            break
-          end
-        end
+        add(t)
       end
     end
 
-    def short_list
+    def to_short_list
       longest_id = @hash.keys.max {|id| id.length }
       @hash.map { |id, task|
         marker = task.notes? ? " »" : ""
@@ -22,12 +16,43 @@ module Taskmeister
       }
     end
 
+    def tasks
+      @hash.values
+    end
+
     def [](key)
       @hash[key]
     end
 
+    def add(task)
+      prefix = short_code_for_task(task)
+      @hash[prefix] = task
+    end
+
     def complete(short_id)
-      # @hash.remove(short_id)
+      @hash.delete(short_id)
+    end
+
+    def replace(short_id, new_text)
+      task = self[short_id]
+      return unless task
+
+      @hash[short_id] = Task.new(new_text, task.id, task.notes)
+    end
+
+    def details(short_id)
+      return [] unless @hash.has_key?(short_id)
+
+      self[short_id].to_markdown
+    end
+
+    private
+
+    def short_code_for_task(task)
+      task.id.length.times do |i|
+        prefix = task.id.slice(0, i + 1)
+        return prefix unless @hash.has_key?(prefix)
+      end
     end
   end
 end

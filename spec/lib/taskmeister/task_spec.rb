@@ -21,6 +21,7 @@ module Taskmeister
         let(:lines) { [
           "A task name - [id](78dc2561-8c9a-4780-a560-56e1e14f2ed3)",
           "> line one of a note",
+          ">",
           "> line two of a note"
         ]}
 
@@ -30,7 +31,7 @@ module Taskmeister
         end
 
         it "concatenates together the notes of the task" do
-          expect(subject.notes).to eq "line one of a note\nline two of a note"
+          expect(subject.notes).to eq "line one of a note\n\nline two of a note"
         end
       end
 
@@ -42,6 +43,38 @@ module Taskmeister
         it "raises an error" do
           expect{ subject }.to raise_error
         end
+      end
+    end
+
+    describe ".create" do
+      it "returns a task with the specified text and a new id" do
+        task = described_class.create("My task text")
+        expect(task.text).to eq "My task text"
+        expect(task.id).to match /[\w-]+/
+        expect(task.notes).to eq ""
+      end
+    end
+
+    describe "#to_markdown" do
+      it "returns a list of markdown-formatted lines" do
+        task = described_class.new("task 8", "f23891df0-97a5-4310-9b01-374983416af7", " ")
+        expect(task.to_markdown).to eq [
+          "task 8 - [id](f23891df0-97a5-4310-9b01-374983416af7)"
+        ]
+      end
+
+      it "returns a list of markdown-formatted lines including notes" do
+        task = described_class.new("task 8", "f23891df0-97a5-4310-9b01-374983416af7",
+                        "First line of a note\nsecond line\n\nthird line")
+        expect(task.to_markdown).to eq [
+          "task 8 - [id](f23891df0-97a5-4310-9b01-374983416af7)",
+          "",
+          "> First line of a note",
+          "> second line",
+          ">",
+          "> third line",
+          ""
+        ]
       end
     end
   end

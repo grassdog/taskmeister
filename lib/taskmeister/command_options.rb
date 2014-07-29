@@ -3,9 +3,16 @@ require "ostruct"
 
 module Taskmeister
   class CommandOptions
+    ADD     = "add"
+    LIST    = "list"
+    REPLACE = "replace"
+    EDIT    = "edit"
+    SHOW    = "show"
+    DONE    = "done"
+
     def self.default_options
       OpenStruct.new.tap do |o|
-        o.command = "list"
+        o.command = LIST
         o.task_dir = Pathname.getwd
       end
     end
@@ -36,25 +43,25 @@ module Taskmeister
 
         opts.on("-d", "--done TASK_ID",
                 "Finish a task") do |done_id|
-          options.command = "done"
+          options.command = DONE
           options.task_id = done_id
         end
 
         opts.on("-s", "--show TASK_ID",
                 "Show a task list item including its notes") do |show_id|
-          options.command = "show"
+          options.command = SHOW
           options.task_id = show_id
         end
 
         opts.on("-e", "--edit TASK_ID",
-                "Open a task in Vim") do |edit_id|
-          options.command = "edit"
+                "Edit a task in Vim") do |edit_id|
+          options.command = EDIT
           options.task_id = edit_id
         end
 
         opts.on("-r", "--replace TASK_ID",
                 "Replace a task description") do |replace_id|
-          options.command = "replace"
+          options.command = REPLACE
           options.task_id = replace_id
         end
 
@@ -66,7 +73,6 @@ module Taskmeister
           exit
         end
 
-        # Another typical switch to print the version.
         opts.on_tail("--version", "Show version") do
           puts Taskmeister::VERSION
           exit
@@ -74,7 +80,15 @@ module Taskmeister
       end
 
       task_text = opt_parser.parse!(args)
+
       options.task_text = task_text.join(" ") unless task_text.empty?
+
+      # If there is task text and the default command hasn't been overwritten
+      # make the command an add
+      if !task_text.empty? and options.command == LIST
+        options.command = ADD
+      end
+
       options
     end
   end
