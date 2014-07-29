@@ -9,7 +9,7 @@ module Taskmeister
     end
 
     def to_short_list
-      longest_id = @hash.keys.max {|id| id.length }
+      longest_id = @hash.keys.max_by(&:length)
       @hash.map { |id, task|
         marker = task.notes? ? " »" : ""
         "%-#{longest_id.length}s - %s%s" % [id, task.text, marker]
