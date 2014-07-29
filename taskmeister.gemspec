@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ray.grasso@gmail.com"]
   spec.summary       = %q{Another command line task manager.}
   spec.description   = %q{Another command line task manager. You know, because I'm special.}
-  spec.homepage      = "https://www.github.com/grassdog/taskmeister"
+  spec.homepage      = "https://github.com/grassdog/taskmeister"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
