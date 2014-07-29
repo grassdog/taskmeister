@@ -6,6 +6,7 @@ $LOAD_PATH << File.expand_path("../../lib", __FILE__)
 Signal.trap("INT") { exit 1 }
 
 require "taskmeister"
+require "pathname"
 
 def update(task_list, file_path)
   yield
@@ -18,7 +19,7 @@ task_list_name = options.list || Taskmeister::ProjectDirectory.list_name_for(Pat
 
 unless task_list_name
   puts "Could not find a project directory. Please specify a task list."
-  exit(1)
+  exit 1
 end
 
 task_list_path = Pathname.new(options.task_dir) + task_list_name

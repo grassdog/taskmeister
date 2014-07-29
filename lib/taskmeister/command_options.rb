@@ -1,5 +1,6 @@
 require "optparse"
 require "ostruct"
+require "pathname"
 
 module Taskmeister
   class CommandOptions
@@ -30,7 +31,7 @@ module Taskmeister
         opts.separator ""
 
         opts.on("-t", "--task-dir DIRECTORY",
-                "The DIRECTORY where your task lists are stored. Defaults to pwd.") do |dir|
+                "The DIRECTORY where your task lists are stored. (Defaults to pwd)") do |dir|
           options.task_dir = Pathname.new(dir)
         end
 
@@ -48,7 +49,7 @@ module Taskmeister
         end
 
         opts.on("-s", "--show TASK_ID",
-                "Show a task list item including its notes") do |show_id|
+                "Show a task list item and its notes") do |show_id|
           options.command = SHOW
           options.task_id = show_id
         end

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Taskmeister::VERSION
   spec.authors       = ["Ray Grasso"]
   spec.email         = ["ray.grasso@gmail.com"]
-  spec.summary       = %q{A simple command line task manager.}
-  spec.description   = %q{Another command line task manager. You know, for the heck of it.}
+  spec.summary       = %q{Another command line task manager.}
+  spec.description   = %q{Another command line task manager. You know, because I'm special.}
   spec.homepage      = "https://www.github.com/grassdog/taskmeister"
   spec.license       = "MIT"
 
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake", "~> 10"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry-byebug", "~> 1.3"
 end
