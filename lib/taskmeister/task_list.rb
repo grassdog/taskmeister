@@ -1,11 +1,17 @@
 module Taskmeister
   class TaskList
-    def initialize(tasks)
+    attr_reader :file_path
+
+    def initialize(tasks, file_path)
+      @file_path = file_path
+
       @hash = {}
 
       tasks.each do |t|
         add(t)
       end
+
+      @dirty = false
     end
 
     def to_short_list
@@ -24,13 +30,23 @@ module Taskmeister
       @hash[key]
     end
 
+    def empty?
+      @hash.empty?
+    end
+
+    def dirty?
+      @dirty
+    end
+
     def add(task)
       prefix = assign_short_code_to_task(task)
       @hash[prefix] = task
+      @dirty = true
     end
 
     def complete(short_id)
-      @hash.delete(short_id)
+      removed_val = @hash.delete(short_id)
+      @dirty = true if removed_val
     end
 
     def replace(short_id, new_text)
@@ -38,9 +54,10 @@ module Taskmeister
       return unless task
 
       @hash[short_id] = Task.new(new_text, task.id, task.notes)
+      @dirty = true
     end
 
-    def details(short_id)
+    def markdown_for(short_id)
       return [] unless @hash.has_key?(short_id)
 
       self[short_id].to_markdown

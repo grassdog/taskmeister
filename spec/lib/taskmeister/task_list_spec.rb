@@ -16,7 +16,15 @@ module Taskmeister
       task1, task2, task3, task4, task5, task6, task7
     ]}
 
-    let(:list) { described_class.new(tasks) }
+    let(:list) { described_class.new(tasks, "fake file") }
+
+    it "saves its file path" do
+      expect(list.file_path).to eq "fake file"
+    end
+
+    it "is initially clean" do
+      expect(list.dirty?).to eq false
+    end
 
     describe "#[]" do
       it "uses the shortest common prefix to index a task" do
@@ -49,34 +57,58 @@ module Taskmeister
     describe "#complete" do
       it "removes the identified task" do
         expect(list["7"]).to eq task1
-        result = list.complete("7")
-        expect(result).to be_truthy
+        list.complete("7")
         expect(list["7"]).to be_nil
       end
 
-      it "ignores non-existent tasks" do
-        result = list.complete("345")
-        expect(result).to be_falsy
-        expect(list.tasks.size).to eq tasks.size
+      it "marks the list as dirty" do
+        list.complete("7")
+        expect(list.dirty?).to eq true
+      end
+
+      context "when removing a non-existent task" do
+        before do
+          list.complete("345")
+        end
+
+        it "doesn't change the list" do
+          expect(list.tasks.size).to eq tasks.size
+        end
+
+        it "is not marked as dirty" do
+          expect(list.dirty?).to eq false
+        end
       end
     end
 
     describe "#replace" do
       it "replaces the text of the specified task" do
-        result = list.replace("7", "A new task text")
-        expect(result).to be_truthy
+        list.replace("7", "A new task text")
         task = list["7"]
         expect(task.text).to eq "A new task text"
       end
 
-      it "ignores a non-existent task" do
-        result = list.replace("345", "A new task text")
-        expect(result).to be_falsy
-        expect(list.tasks.size).to eq tasks.size
+      it "marks the list as dirty" do
+        list.replace("7", "A new task text")
+        expect(list.dirty?).to eq true
+      end
+
+      context "when removing a non-existent task" do
+        before do
+          list.replace("345", "A new task text")
+        end
+
+        it "doesn't change the list" do
+          expect(list.tasks.size).to eq tasks.size
+        end
+
+        it "is not marked as dirty" do
+          expect(list.dirty?).to eq false
+        end
       end
     end
 
-    describe "#details" do
+    describe "#markdown_for" do
       before do
         allow_any_instance_of(Task).to receive(:to_markdown).and_return([
           "line 1",
@@ -85,21 +117,28 @@ module Taskmeister
       end
 
       it "returns an empty list if the id doesn't exist" do
-        expect(list.details("34")).to eq []
+        expect(list.markdown_for("34")).to eq []
       end
 
       it "returns the lines of a task" do
-        expect(list.details("7")).to eq ["line 1", "line 2"]
+        expect(list.markdown_for("7")).to eq ["line 1", "line 2"]
       end
     end
 
     describe "#add" do
+      let(:task8) { Task.new("task 8", "f23891df0-97a5-4310-9b01-374983416af7", nil) }
+
+      before do
+        list.add(task8)
+      end
+
       it "adds the task and assigns it a short id" do
-        task8 = Task.new("task 8", "f23891df0-97a5-4310-9b01-374983416af7", nil)
-        result = list.add(task8)
-        expect(result).to be_truthy
         expect(list.tasks.size).to eq 8
         expect(list["f23"]).to eq task8
+      end
+
+      it "marks the list as dirty" do
+        expect(list.dirty?).to eq true
       end
     end
   end

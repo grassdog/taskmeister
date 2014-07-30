@@ -1,6 +1,6 @@
 Feature: taskmeister shows the details of a task in the list
 
-  Scenario: Show task in task list in the current directory
+  Scenario: Show task in list
     Given a file named "mylist.md" with:
       """
 Task one - [id](aaf83a9b-02f7-4cc0-8ee1-4d98b98903b8)

@@ -11,14 +11,14 @@ module Taskmeister
         allow(TaskList).to receive(:new).and_return(double(TaskList))
       end
 
-      let(:it) { described_class.from_markdown(lines) }
+      let(:it) { described_class.from_markdown(lines, "fake file") }
 
       describe "passed an empty list of lines" do
         let(:lines) { [] }
 
         it "creates an empty task list" do
           expect(Task).not_to receive(:from_markdown)
-          expect(TaskList).to receive(:new).with([])
+          expect(TaskList).to receive(:new).with([], "fake file")
           it
         end
       end
