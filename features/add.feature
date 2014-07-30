@@ -15,3 +15,8 @@ Task three - [id](a5d4d3a9-2b9a-427a-9047-b47c6aec8f93)
     And I successfully run `taskmeister --list mylist.md`
     Then the output should contain "A new task"
 
+  Scenario: Add a task to an empty list
+    When I successfully run `taskmeister --list mylist.md A new task`
+    And I successfully run `taskmeister --list mylist.md`
+    Then the output should contain "A new task"
+    And a file named "mylist.md" should exist
