@@ -86,8 +86,8 @@ module Taskmeister
 
         options.task_text = task_text.join(" ") unless task_text.empty?
 
-        # If there is task text and the default command hasn't been overwritten
-        # by the user, make the command add
+        # If there is TASK TEXT and the default command hasn't been overwritten
+        # by the user, set the command to ADD
         if !task_text.empty? and options.command == Commands::LIST
           options.command = Commands::ADD
         end

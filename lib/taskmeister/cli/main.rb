@@ -55,13 +55,13 @@ module Taskmeister
         when Commands::DONE
 
           update_task_list(task_list, task_list_path) {
-            task_list.complete options.task_id
+            task_list.complete(options.task_id)
           }
 
         when Commands::REPLACE
 
           update_task_list(task_list, task_list_path) {
-            task_list.replace options.task_id, options.task_text
+            task_list.replace(options.task_id, options.task_text)
           }
 
         end
