@@ -23,7 +23,7 @@ module Taskmeister
         task_list_name = options.list || TaskListName.from_project_dir(Pathname.getwd)
 
         unless task_list_name
-          @stdout.puts "Could not find a project directory. Please specify a task list."
+          @stderr.puts "Could not find a project directory. Please specify a task list."
           @kernel.exit 1
         end
 
