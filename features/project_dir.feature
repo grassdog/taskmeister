@@ -1,6 +1,6 @@
 Feature: taskmeister infers the name of your task list from your current project directory
 
-  Scenario: Project directory with task list
+  Scenario: List tasks in task list found from project directory
     Given a directory named "project"
     And a directory named "project/.git"
     And a directory named "project/child"

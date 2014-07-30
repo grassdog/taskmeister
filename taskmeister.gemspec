@@ -22,5 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "aruba", "~> 0.6"
+  spec.add_development_dependency "aruba-doubles", "~> 1.2"
   spec.add_development_dependency "pry-byebug", "~> 1.3"
 end

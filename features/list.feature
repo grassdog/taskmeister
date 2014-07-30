@@ -1,6 +1,6 @@
 Feature: taskmeister lists the contents of a task list
 
-  Scenario: Normal directory with explicit task list
+  Scenario: List tasks in task list in the current directory
     Given a file named "mylist.md" with:
       """
 Task one - [id](aaf83a9b-02f7-4cc0-8ee1-4d98b98903b8)
