@@ -4,9 +4,10 @@ Simple command line task management modelled after [t](http://stevelosh.com/proj
 
 I like the simplicity of t but there are a couple of changes I wanted.
 
-First: I like to have separate task lists per project. So I infer the task list
-name from the current project directory. It finds a project directory by walking
-up from the current directory until it finds a `.git` or `.hg` directory in it.
+First: I like to have separate task lists per project but I want a single shell
+alias for all of them. So I infer the task list name from the current project
+directory. It finds a project directory by walking up from the current directory
+until it finds a `.git` or `.hg` directory in it.
 
 Second: I like to have a short list of notes accompanying my tasks. You can add
 notes beneath your task. They can be edited via Vim with `taskmeister -e` or
