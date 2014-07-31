@@ -3,9 +3,9 @@ module Taskmeister
     attr_reader :file_path
 
     def initialize(tasks, file_path)
-      @file_path = file_path
+      @file_path = Pathname.new file_path
 
-      @hash = {}
+      @shortIdToTask = {}
 
       tasks.each do |t|
         add(t)
@@ -15,23 +15,23 @@ module Taskmeister
     end
 
     def to_short_list
-      longest_id = @hash.keys.max_by(&:length)
-      @hash.map { |id, task|
+      longest_id = @shortIdToTask.keys.max_by(&:length)
+      @shortIdToTask.map { |id, task|
         marker = task.notes? ? " »" : ""
         "%-#{longest_id.length}s - %s%s" % [id, task.text, marker]
       }
     end
 
     def tasks
-      @hash.values
+      @shortIdToTask.values
     end
 
     def [](key)
-      @hash[key]
+      @shortIdToTask[key]
     end
 
     def empty?
-      @hash.empty?
+      @shortIdToTask.empty?
     end
 
     def dirty?
@@ -40,12 +40,12 @@ module Taskmeister
 
     def add(task)
       prefix = assign_short_code_to_task(task)
-      @hash[prefix] = task
+      @shortIdToTask[prefix] = task
       @dirty = true
     end
 
     def complete(short_id)
-      removed_val = @hash.delete(short_id)
+      removed_val = @shortIdToTask.delete(short_id)
       @dirty = true if removed_val
     end
 
@@ -53,12 +53,12 @@ module Taskmeister
       task = self[short_id]
       return unless task
 
-      @hash[short_id] = Task.new(new_text, task.id, task.notes)
+      @shortIdToTask[short_id] = Task.new(new_text, task.id, task.notes)
       @dirty = true
     end
 
     def markdown_for(short_id)
-      return [] unless @hash.has_key?(short_id)
+      return [] unless @shortIdToTask.has_key?(short_id)
 
       self[short_id].to_markdown
     end
@@ -68,7 +68,7 @@ module Taskmeister
     def assign_short_code_to_task(task)
       task.id.length.times do |i|
         prefix = task.id.slice(0, i + 1)
-        return prefix unless @hash.has_key?(prefix)
+        return prefix unless @shortIdToTask.has_key?(prefix)
       end
     end
   end

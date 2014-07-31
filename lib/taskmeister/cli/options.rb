@@ -4,17 +4,8 @@ require "pathname"
 
 module Taskmeister
   module Cli
-    module Commands
-      ADD     = "add"
-      LIST    = "list"
-      REPLACE = "replace"
-      EDIT    = "edit"
-      SHOW    = "show"
-      DONE    = "done"
-    end
-
     class Options
-      def initialize(stdout = STDOUT, kernel = Kernel)
+      def initialize(stdout=STDOUT, kernel=Kernel)
         @stdout = stdout
         @kernel = kernel
       end
@@ -45,26 +36,26 @@ module Taskmeister
 
           opts.on("-d", "--done TASK_ID",
                   "Finish a task") do |task_id|
-            options.command = Commands::DONE
+            options.command = Commands::Done
             options.task_id = task_id
           end
 
           opts.on("-s", "--show TASK_ID",
                   "Show a task list item and its notes") do |task_id|
-            options.command = Commands::SHOW
+            options.command = Commands::Show
             options.task_id = task_id
           end
 
           opts.on("-e", "--edit [TASK_ID]",
                   "Edit task list in Vim",
                   "  Will search for a specific task if TASK_ID is provided") do |task_id|
-            options.command = Commands::EDIT
+            options.command = Commands::Edit
             options.task_id = task_id
           end
 
           opts.on("-r", "--replace TASK_ID",
                   "Replace a task description") do |task_id|
-            options.command = Commands::REPLACE
+            options.command = Commands::Replace
             options.task_id = task_id
           end
 
@@ -88,8 +79,8 @@ module Taskmeister
 
         # If there is TASK TEXT and the default command hasn't been overwritten
         # by the user, set the command to ADD
-        if !task_text.empty? and options.command == Commands::LIST
-          options.command = Commands::ADD
+        if !task_text.empty? and options.command == Commands::List
+          options.command = Commands::Add
         end
 
         options
@@ -99,7 +90,7 @@ module Taskmeister
 
       def default_options
         OpenStruct.new.tap do |o|
-          o.command  = Commands::LIST
+          o.command  = Commands::List
           o.task_dir = Pathname.getwd
         end
       end

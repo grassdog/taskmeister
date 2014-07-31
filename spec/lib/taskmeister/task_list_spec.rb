@@ -18,8 +18,8 @@ module Taskmeister
 
     let(:list) { described_class.new(tasks, "fake file") }
 
-    it "saves its file path" do
-      expect(list.file_path).to eq "fake file"
+    it "initially saves its file path" do
+      expect(list.file_path).to eq Pathname.new("fake file")
     end
 
     it "is initially clean" do
