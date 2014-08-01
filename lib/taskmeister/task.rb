@@ -5,26 +5,21 @@ module Taskmeister
     attr_reader :text, :notes, :id
 
     def initialize(text, id, notes)
-      @text, @id, @notes = text, id, notes
+      @text, @id, @notes = text, id, Array(notes)
     end
 
     def notes?
-      notes && !notes.empty?
+      notes.any? { |ns| !ns.empty? }
     end
 
     def to_markdown
-      [ "#{text} - [id](#{id})" ].tap do |a|
-        return a unless notes.match(/\S/)
-        a << ""
-        a.concat notes.split("\n").map { |n|
-          n.size > 0 ? "> #{n}" : ">"
-        }
-        a << ""
+      [ "# #{text} [∞](##{id})" ].tap do |a|
+        a.concat notes
       end
     end
 
     def self.create(text)
-      self.new(text, SecureRandom.uuid, "")
+      self.new(text, SecureRandom.uuid, [""])
     end
 
     def self.from_markdown(lines)
@@ -32,13 +27,11 @@ module Taskmeister
 
       text, id = task_attributes(task)
 
-      notes = notes.map { |l| l.gsub(/\A> ?/, "") }.join("\n")
-
       self.new(text, id, notes)
     end
 
     def self.task_attributes(line)
-      matches = line.match(/\A(.+) - \[id\]\(([\w-]+)\)\z/)
+      matches = line.match(/#\s(.+)\s\[∞\]\(#([\w-]+)\)/)
 
       fail "Invalid task: #{line}" unless matches
 

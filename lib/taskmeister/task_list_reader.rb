@@ -1,16 +1,19 @@
 module Taskmeister
   class TaskListReader
     def self.from_markdown(file_lines, file_path)
-      grouped_lines = \
+      lines_grouped_by_task = \
         file_lines.map(&:chomp)
-                  .reject(&:empty?)
                   .reduce([]) do |acc, l|
-                    acc << [l]    if l.match(/\A[^\s>]/) # A new task
-                    acc.last << l if l.match(/\A>/)      # A line of note for the latest task
-                    acc
+                    acc.tap do |a|
+                      if l.match(/#\s.+\s\[∞\]\(#[\w-]+\)/)
+                        acc << [l]    # A new task
+                      else
+                        acc.last << l # A line of note for the latest task
+                      end
+                    end
                   end
 
-      tasks = grouped_lines.map do |ls|
+      tasks = lines_grouped_by_task.map do |ls|
         Task.from_markdown ls
       end
 

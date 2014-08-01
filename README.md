@@ -17,14 +17,19 @@ Third: I format my task files in Markdown so that when I open them on my phone
 via a Markdown-enabled editor they look nice. The format is still simple:
 
 ```markdown
-Add authorisation - [id](aaf83a9b-02f7-4cc0-8ee1-4d98b98903b8)
+# Update gems [∞](#aaf83a9b-02f7-4cc0-8ee1-4d98b98903b8)
 
-> Some notes to go with the task above.
->
-> Maybe paste in some links or other interesting information for later.
+# Refactor the widget model [∞](#ae0cce15-456d-48c0-a2e2-69d5f567e092)
 
-Refactor the task model - [id](ae0cce15-456d-48c0-a2e2-69d5f567e092)
-Update the README - [id](a5d4d3a9-2b9a-427a-9047-b47c6aec8f93)
+# Update the README [∞](#a5d4d3a9-2b9a-427a-9047-b47c6aec8f93)
+
+Some notes to go with the task above.
+
+- item 1
+- item 2
+
+> Or a quote
+
 ```
 
 ## Installation

@@ -25,48 +25,59 @@ module Taskmeister
 
       describe "passed a list of simple tasks" do
         let(:lines) { [
-          "Task number 1\n",
-          "Task number 2\n"
+          "# Task number 1 [∞](#e8fd82de-c379-496d-a77b-2873192e8ea8)\n",
+          "\n",
+          "# Task number 2 [∞](#e9fd82de-c379-496d-a77b-2873192e8ea8)\n",
+          "\n"
           ]
         }
 
         it "creates a task for each line, stripping new lines" do
-          expect(Task).to receive(:from_markdown).with([ "Task number 1" ])
-          expect(Task).to receive(:from_markdown).with([ "Task number 2" ])
+          expect(Task).to receive(:from_markdown).with([ "# Task number 1 [∞](#e8fd82de-c379-496d-a77b-2873192e8ea8)", ""])
+          expect(Task).to receive(:from_markdown).with([ "# Task number 2 [∞](#e9fd82de-c379-496d-a77b-2873192e8ea8)", ""])
           it
         end
       end
 
       describe "passed a list of tasks with notes" do
         let(:lines) { [
-          "Task number 1\n",
+          "# Task number 1 [∞](#e8fd82de-c379-496d-a77b-2873192e8ea8)\n",
           "\n",
-          "> note line 1\n",
-          "> note line 2\n",
+          "note line 1\n",
           "\n",
-          "Task number 2\n",
-          "Task number 3\n",
           "\n",
-          "> note line 3\n",
-          "> note line 4\n",
-          "",
-          "",
+          "note line 2\n",
+          "\n",
+          "# Task number 2 [∞](#18fd82de-c379-496d-a77b-2873192e8ea8)\n",
+          "\n",
+          "# Task number 3 [∞](#e9fd82de-c379-496d-a77b-2873192e8ea8)\n",
+          "\n",
+          "note line 3\n",
+          "note line 4\n",
+          "\n"
           ]
         }
 
         it "creates a task for each line with their associated notes, stripping newlines" do
           expect(Task).to receive(:from_markdown).with([
-            "Task number 1",
-            "> note line 1",
-            "> note line 2",
+            "# Task number 1 [∞](#e8fd82de-c379-496d-a77b-2873192e8ea8)",
+            "",
+            "note line 1",
+            "",
+            "",
+            "note line 2",
+            "",
           ])
           expect(Task).to receive(:from_markdown).with([
-            "Task number 2"
+            "# Task number 2 [∞](#18fd82de-c379-496d-a77b-2873192e8ea8)",
+            "",
           ])
           expect(Task).to receive(:from_markdown).with([
-            "Task number 3",
-            "> note line 3",
-            "> note line 4",
+            "# Task number 3 [∞](#e9fd82de-c379-496d-a77b-2873192e8ea8)",
+            "",
+            "note line 3",
+            "note line 4",
+            ""
           ])
 
           it
