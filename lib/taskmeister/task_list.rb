@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Taskmeister
   class TaskList
     attr_reader :file_path

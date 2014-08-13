@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Taskmeister
   class TaskListReader
     def self.from_markdown(file_lines, file_path)
